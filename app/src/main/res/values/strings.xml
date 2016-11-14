@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Event Finder</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="conf_pass_hint">Confirm Password</string>
+    <string name="name_hint">Name</string>
+    <string name="lastname_hint">Lastname</string>
+    <string name="age_hint">Age</string>
+    <string name="email_hint">Email</string>
+    <string name="text_login_btn">Log In</string>
+    <string name="text_signup_btn">Sign Up</string>
+    <string name="fail_login_title">Log In failed</string>
+    <string name="fail_login_msg">Please check your username/password. If you are not a user yet please Sign Up.</string>
+    <string name="title_activity_home">Welcome</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+</resources>
