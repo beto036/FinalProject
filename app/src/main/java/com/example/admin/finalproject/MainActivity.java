@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean loginSuccess;
     private static final String TAG = "MainActivityTAG_";
 
-    private User user;
+    public User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-//        DaggerUserComponent.builder().myModule(new UserModule()).build().inject(this);
 
 
     }
@@ -76,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onCompleted: ");
                         alertDialog.dismiss();
                         if(loginSuccess){
+                            ((App)getApplication()).setUser(user);
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-
                             startActivity(intent);
                         }else{
                             failLoginAlert = new AlertDialog.Builder(MainActivity.this)

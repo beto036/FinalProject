@@ -3,6 +3,7 @@ package com.example.admin.finalproject;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,20 +13,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.example.admin.finalproject.entities.User;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "HomeActivityTAG_";
-//    @Inject
-//    private User user;
+    private User user;
+
+//    @BindView(R.id.navHeadHomeTxtUser)
+    public TextView userTxt;
+
+//    @BindView(R.id.navHeadHomeTxtMail)
+    public TextView mailTxt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-//        Log.d(TAG, "onCreate: " + user.toString());
+        ButterKnife.bind(this);
+
+        user = ((App)getApplication()).getUser();
+
+        Log.d(TAG, "onCreate: " + user.toString());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,6 +63,11 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View view = navigationView.getHeaderView(0);
+        userTxt = (TextView) view.findViewById(R.id.navHeadHomeTxtUser);
+        mailTxt = (TextView) view.findViewById(R.id.navHeadHomeTxtMail);
+        userTxt.setText(user.getName() + " " + user.getLastname());
+        mailTxt.setText(user.getEmail());
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -87,17 +109,13 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_add_event) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_find_event) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_find_friend) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_friends) {
 
         }
 
