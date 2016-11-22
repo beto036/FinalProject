@@ -40,14 +40,6 @@ public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.aSignUpEditPass)
     EditText editTextPass;
 
-    @BindView(R.id.aSignUpRadioGrp)
-    RadioGroup radioGroup;
-
-    @BindView(R.id.aSignUpRadioMale)
-    RadioButton radioGroupMale;
-
-    @BindView(R.id.aSignUpRadioFemale)
-    RadioButton radioGroupFemale;
 
     private static final String TAG = "SignUpActivityTAG_";
 
@@ -76,9 +68,8 @@ public class SignUpActivity extends AppCompatActivity {
         String username = editTextUsername.getText().toString();
         String password = editTextPass.getText().toString();
         String age = editTextAge.getText().toString();
-        String orientation = radioGroupMale.isChecked() ? "M" : "F";
 
-        User user = new User(name,lastname,Integer.parseInt(age),orientation,username,password,email);
+        User user = new User(name,lastname,Integer.parseInt(age),username,password,email);
 
         Observable<User> observable = RetrofitHelper.Factory.insert(user);
 

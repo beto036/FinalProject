@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -31,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.aMainInputPassword)
     public EditText editTextPass;
 
-    @BindView(R.id.aMainBtnForgot)
-    public Button textViewForgot;
+//    @BindView(R.id.aMainBtnForgot)
+//    public Button textViewForgot;
 
 
     private ProgressDialog alertDialog;
@@ -44,7 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+//        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -76,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                         if(loginSuccess){
                             ((App)getApplication()).setUser(user);
+                            Log.d(TAG, "onCompleted: " + user);
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                             startActivity(intent);
                         }else{

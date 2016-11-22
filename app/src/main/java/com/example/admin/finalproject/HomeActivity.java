@@ -33,6 +33,9 @@ public class HomeActivity extends AppCompatActivity
 //    @BindView(R.id.navHeadHomeTxtMail)
     public TextView mailTxt;
 
+    @BindView(R.id.nav_view)
+    public NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView = (NavigationView) findViewById(R.id.nav_view);
         View view = navigationView.getHeaderView(0);
         userTxt = (TextView) view.findViewById(R.id.navHeadHomeTxtUser);
         mailTxt = (TextView) view.findViewById(R.id.navHeadHomeTxtMail);

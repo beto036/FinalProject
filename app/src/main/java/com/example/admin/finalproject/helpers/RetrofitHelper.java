@@ -2,6 +2,7 @@ package com.example.admin.finalproject.helpers;
 
 import android.util.Log;
 
+import com.example.admin.finalproject.entities.Event;
 import com.example.admin.finalproject.entities.User;
 
 import java.util.List;
@@ -49,13 +50,13 @@ public class RetrofitHelper {
             UserService userService = retrofit.create(UserService.class);
             return userService.insertUser(API_KEY, user);
         }
+
+        public static Observable<List<Event>> getEvents(String userId) {
+            Retrofit retrofit = create();
+            EventService eventService = retrofit.create(EventService.class);
+            String query = "{\"userId\":\"" + userId + "\"}";
+            return eventService.getEvents(query, API_KEY);
+        }
     }
 
-    public interface UserService {
-        @GET("collections/user")
-        Observable<List<User>> getUser(@Query("q") String q, @Query("apiKey") String apiKey);
-
-        @POST("collections/user")
-        Observable<User> insertUser(@Query("apiKey") String apiKey, @Body User user);
-    }
 }

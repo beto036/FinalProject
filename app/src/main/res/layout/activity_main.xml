@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/backgr">
+<LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -11,6 +16,11 @@
     android:orientation="vertical"
     android:focusableInTouchMode="true"
     tools:context="com.example.admin.finalproject.MainActivity">
+
+    <ImageView android:src="@drawable/login_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="372dp"
+        android:layout_gravity="center_horizontal" />
 
 
     <android.support.design.widget.TextInputLayout
@@ -40,29 +50,29 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-        <Button
-            android:id="@+id/aMainBtnSignUp"
-            android:text="Not a user yet?"
-            style="@style/ButtonLink"
-            android:onClick="signUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+        <!--<Button-->
+            <!--android:id="@+id/aMainBtnSignUp"-->
+            <!--android:text="Not a user yet?"-->
+            <!--style="@style/ButtonLink"-->
+            <!--android:onClick="signUp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"/>-->
 
 
-        <Button
-            android:id="@+id/aMainBtnForgot"
-            android:text="Forgot username or password"
-            android:onClick="forgot"
-            style="@style/ButtonLink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:id="@+id/aMainBtnForgot"-->
+            <!--android:text="Forgot username or password"-->
+            <!--android:onClick="forgot"-->
+            <!--style="@style/ButtonLink"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"/>-->
+    <!--</LinearLayout>-->
 
     <Button
         android:layout_width="match_parent"
@@ -70,4 +80,14 @@
         android:text="@string/text_login_btn"
         android:onClick="login"
         style="@style/Button" />
+
+    <TextView android:id="@+id/link_signup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="No account yet? Create one"
+        android:gravity="center"
+        android:textSize="16dip"
+        android:onClick="signUp"/>
 </LinearLayout>
+</ScrollView>
