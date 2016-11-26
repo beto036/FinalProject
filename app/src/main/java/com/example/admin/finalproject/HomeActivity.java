@@ -153,8 +153,8 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_add_event) {
-            Intent intent = new Intent(this, MapsActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, MapsActivity.class);
+//            startActivity(intent);
         } else if (id == R.id.nav_find_event) {
 
         } else if (id == R.id.nav_find_friend) {
