@@ -39,7 +39,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = "HomeActivityTAG_";
     private User user;
@@ -214,4 +214,5 @@ public class HomeActivity extends AppCompatActivity
                     }
                 });
     }
+
 }

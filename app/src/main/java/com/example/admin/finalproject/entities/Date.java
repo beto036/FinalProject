@@ -16,6 +16,11 @@ public class Date {
     @Expose
     private String $date;
 
+    public Date(){}
+
+    public Date(String date) {
+        $date = date;
+    }
 
 
     /**

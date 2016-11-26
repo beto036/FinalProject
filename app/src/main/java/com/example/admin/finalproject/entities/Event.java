@@ -1,10 +1,13 @@
 
 package com.example.admin.finalproject.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Event {
+public class Event implements Parcelable{
 
     @SerializedName("event")
     @Expose
@@ -166,4 +169,59 @@ public class Event {
                 ", date=" + date +
                 '}';
     }
+
+    protected Event(Parcel in) {
+        event = in.readString();
+        description = in.readString();
+        latitude = in.readByte() == 0x00 ? null : in.readInt();
+        longitude = in.readByte() == 0x00 ? null : in.readInt();
+        userId = in.readString();
+        byte isAdminVal = in.readByte();
+        isAdmin = isAdminVal == 0x02 ? null : isAdminVal != 0x00;
+        long tmpDate = in.readLong();
+        date = new Date(in.readString());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(event);
+        dest.writeString(description);
+        if (latitude == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(latitude);
+        }
+        if (longitude == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(longitude);
+        }
+        dest.writeString(userId);
+        if (isAdmin == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (isAdmin ? 0x01 : 0x00));
+        }
+        dest.writeString(date.get$date());
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }

@@ -1,7 +1,6 @@
 package com.example.admin.finalproject.helpers;
 
-import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,14 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.admin.finalproject.EventDetailsFragment;
-import com.example.admin.finalproject.HomeActivity;
 import com.example.admin.finalproject.R;
 import com.example.admin.finalproject.entities.Event;
 
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -83,15 +79,17 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: ");
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("EVENT", event);
                     AppCompatActivity appCompatActivity = (AppCompatActivity) v.getContext();
                     EventDetailsFragment eventDetailsFragment = new EventDetailsFragment();
+                    eventDetailsFragment.setArguments(bundle);
                     appCompatActivity
                             .getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.aHomeFragFrame,eventDetailsFragment)
                             .commit();
 
-//                    EventBus.getDefault().post(event);
                 }
             });
         }
