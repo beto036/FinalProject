@@ -17,6 +17,8 @@ import com.example.admin.finalproject.HomeActivity;
 import com.example.admin.finalproject.R;
 import com.example.admin.finalproject.entities.Event;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 /**
@@ -88,6 +90,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
                             .beginTransaction()
                             .replace(R.id.aHomeFragFrame,eventDetailsFragment)
                             .commit();
+
+//                    EventBus.getDefault().post(event);
                 }
             });
         }

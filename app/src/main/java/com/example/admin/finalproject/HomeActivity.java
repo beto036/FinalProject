@@ -23,6 +23,7 @@ import com.example.admin.finalproject.entities.User;
 import com.example.admin.finalproject.helpers.EventAdapter;
 import com.example.admin.finalproject.helpers.RetrofitHelper;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,6 +57,8 @@ public class HomeActivity extends AppCompatActivity
 
     private ArrayList<Event> mArrayList;
     private EventAdapter eventAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,5 +214,4 @@ public class HomeActivity extends AppCompatActivity
                     }
                 });
     }
-
 }

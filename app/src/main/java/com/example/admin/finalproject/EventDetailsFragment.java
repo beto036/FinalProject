@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EventDetailsFragment extends Fragment {
 
+
+    private static final String TAG = "EDetailFragTAG_";
 
     public EventDetailsFragment() {
         // Required empty public constructor
@@ -25,5 +28,4 @@ public class EventDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event_details, container, false);
     }
-
 }
