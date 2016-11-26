@@ -5,11 +5,15 @@
         <item
             android:id="@+id/nav_add_event"
             android:icon="@mipmap/ic_event_note_black"
-            android:title="Add Event" />
+            android:title="New Event" />
         <item
             android:id="@+id/nav_find_event"
             android:icon="@mipmap/ic_event_available_black"
-            android:title="Find Event" />
+            android:title="Scheduled Events" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@mipmap/ic_event_black"
+            android:title="My Events" />
         <item
             android:id="@+id/nav_find_friend"
             android:icon="@mipmap/ic_person_add_black"

@@ -6,9 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Event {
 
-    @SerializedName("_id")
-    @Expose
-    private Id id;
     @SerializedName("event")
     @Expose
     private String event;
@@ -24,24 +21,12 @@ public class Event {
     @SerializedName("userId")
     @Expose
     private String userId;
-
-    /**
-     *
-     * @return
-     *     The id
-     */
-    public Id getId() {
-        return id;
-    }
-
-    /**
-     *
-     * @param id
-     *     The _id
-     */
-    public void setId(Id id) {
-        this.id = id;
-    }
+    @SerializedName("isAdmin")
+    @Expose
+    private Boolean isAdmin;
+    @SerializedName("date")
+    @Expose
+    private Date date;
 
     /**
      * 
@@ -133,4 +118,52 @@ public class Event {
         this.userId = userId;
     }
 
+    /**
+     * 
+     * @return
+     *     The isAdmin
+     */
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    /**
+     * 
+     * @param isAdmin
+     *     The isAdmin
+     */
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    /**
+     * 
+     * @return
+     *     The date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * 
+     * @param date
+     *     The date
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "event='" + event + '\'' +
+                ", description='" + description + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", userId='" + userId + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", date=" + date +
+                '}';
+    }
 }

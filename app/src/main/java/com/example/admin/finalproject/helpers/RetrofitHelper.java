@@ -51,10 +51,10 @@ public class RetrofitHelper {
             return userService.insertUser(API_KEY, user);
         }
 
-        public static Observable<List<Event>> getEvents(String userId) {
+        public static Observable<List<Event>> getEvents(String userId, boolean isAdmin) {
             Retrofit retrofit = create();
             EventService eventService = retrofit.create(EventService.class);
-            String query = "{\"userId\":\"" + userId + "\"}";
+            String query = "{\"userId\":\"" + userId + "\", \"isAdmin\":" + isAdmin + "}";
             return eventService.getEvents(query, API_KEY);
         }
     }
