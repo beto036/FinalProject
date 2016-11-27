@@ -17,10 +17,10 @@ public class Event implements Parcelable{
     private String description;
     @SerializedName("latitude")
     @Expose
-    private Integer latitude;
+    private double latitude;
     @SerializedName("longitude")
     @Expose
-    private Integer longitude;
+    private double longitude;
     @SerializedName("userId")
     @Expose
     private String userId;
@@ -29,7 +29,10 @@ public class Event implements Parcelable{
     private Boolean isAdmin;
     @SerializedName("date")
     @Expose
-    private Date date;
+    private String date;
+
+    public Event() {
+    }
 
     /**
      * 
@@ -72,7 +75,7 @@ public class Event implements Parcelable{
      * @return
      *     The latitude
      */
-    public Integer getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -81,7 +84,7 @@ public class Event implements Parcelable{
      * @param latitude
      *     The latitude
      */
-    public void setLatitude(Integer latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
@@ -90,7 +93,7 @@ public class Event implements Parcelable{
      * @return
      *     The longitude
      */
-    public Integer getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
@@ -99,7 +102,7 @@ public class Event implements Parcelable{
      * @param longitude
      *     The longitude
      */
-    public void setLongitude(Integer longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -144,7 +147,7 @@ public class Event implements Parcelable{
      * @return
      *     The date
      */
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -153,7 +156,7 @@ public class Event implements Parcelable{
      * @param date
      *     The date
      */
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -179,7 +182,7 @@ public class Event implements Parcelable{
         byte isAdminVal = in.readByte();
         isAdmin = isAdminVal == 0x02 ? null : isAdminVal != 0x00;
         long tmpDate = in.readLong();
-        date = new Date(in.readString());
+        date = in.readString();
     }
 
     @Override
@@ -191,25 +194,17 @@ public class Event implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(event);
         dest.writeString(description);
-        if (latitude == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(latitude);
-        }
-        if (longitude == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(longitude);
-        }
+        dest.writeByte((byte) (0x01));
+        dest.writeDouble(latitude);
+        dest.writeByte((byte) (0x01));
+        dest.writeDouble(longitude);
         dest.writeString(userId);
         if (isAdmin == null) {
             dest.writeByte((byte) (0x02));
         } else {
             dest.writeByte((byte) (isAdmin ? 0x01 : 0x00));
         }
-        dest.writeString(date.get$date());
+        dest.writeString(date);
     }
 
     @SuppressWarnings("unused")
