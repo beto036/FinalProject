@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:241674094080:android:4a0abbdbff7e6bcb",
+        "mobilesdk_app_id": "1:241674094080:android:6499d69e5809003d",
         "android_client_info": {
-          "package_name": "com.example.admin.finalproject"
+          "package_name": "com.beto.admin.finalproject"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "241674094080-abv0i8r7au6fon78e4kpvueip4gurnao.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.admin.finalproject",
-            "certificate_hash": "429DA01D083AFE08CE24D69CDCB6977FC69A0556"
-          }
-        },
         {
           "client_id": "241674094080-ef20nohfkov3rmub1pk6rhhgpv5hepot.apps.googleusercontent.com",
           "client_type": 3
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "241674094080-ef20nohfkov3rmub1pk6rhhgpv5hepot.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
