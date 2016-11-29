@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.example.admin.finalproject.entities.Event;
 import com.example.admin.finalproject.entities.User;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,6 +37,7 @@ public class RetrofitHelper {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+                    .client(new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).build())
                     .build();
         }
 
@@ -62,6 +65,15 @@ public class RetrofitHelper {
             Retrofit retrofit = create();
             EventService userService = retrofit.create(EventService.class);
             return userService.insertEvent(API_KEY, event);
+        }
+
+        public static Observable<User> update(User user, String oid) {
+            Retrofit retrofit = create();
+//            String query = "{\"_id\":\"" + oid + "\"}";
+            Log.d(TAG, "update: " + user);
+            UserService userService = retrofit.create(UserService.class);
+            return userService.updateUser(oid, API_KEY, user);
+//            return userService.updateUser(API_KEY, query, update);
         }
     }
 

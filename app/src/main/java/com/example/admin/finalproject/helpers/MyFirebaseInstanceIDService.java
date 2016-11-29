@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.admin.finalproject.MainActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -21,7 +22,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("MY_TOKEN", refreshedToken);
+        editor.putString(MainActivity.TOKEN_KEY, refreshedToken);
+        editor.commit();
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the

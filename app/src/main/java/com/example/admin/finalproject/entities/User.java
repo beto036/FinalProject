@@ -6,6 +6,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
 
+
+    @SerializedName("$set")
+    @Expose
+    private User updateUser;
+
     @SerializedName("_id")
     @Expose
     private Id id;
@@ -27,6 +32,12 @@ public class User {
     @SerializedName("password")
     @Expose
     private String password;
+    @SerializedName("deviceToken")
+    @Expose
+    private String deviceToken;
+
+    public User() {
+    }
 
     public User(String name, String lastname, int age, String username, String password, String email) {
         this.name = name;
@@ -163,6 +174,14 @@ public class User {
         this.password = password;
     }
 
+    public User getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(User updateUser) {
+        this.updateUser = updateUser;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -173,6 +192,15 @@ public class User {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", deviceToken='" + deviceToken + '\'' +
                 '}';
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 }

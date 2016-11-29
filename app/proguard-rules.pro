@@ -18,6 +18,7 @@
 #
 -dontwarn okio.**
 -dontwarn rx.**
+-dontwarn retrofit.**
 -keep class rx.** {*;}
 
 -dontnote retrofit2.Platform

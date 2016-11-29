@@ -2,14 +2,13 @@ package com.example.admin.finalproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.admin.finalproject.entities.User;
@@ -22,12 +21,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TOKEN_KEY = "TOKEN_KEY";
     @BindView(R.id.aMainInputUsername)
     public EditText editTextUsername;
 
@@ -84,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         if(loginSuccess){
                             ((App)getApplication()).setUser(user);
                             Log.d(TAG, "onCompleted: " + user);
+                            validateAndUpdateUser();
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                             startActivity(intent);
                         }else{
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                     .setPositiveButton("OK",null).create();
                             failLoginAlert.show();
                         }
+                        Log.d(TAG, "onCompleted: I completed the request for login");
 
                     }
 
@@ -116,6 +117,45 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void validateAndUpdateUser() {
+        Log.d(TAG, "validateAndUpdateUser: ");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String token = sharedPreferences.getString(TOKEN_KEY,"");
+        Log.d(TAG, "validateAndUpdateUser: " + token);
+        if(token != null){
+            if(user.getDeviceToken() == null || !token.equals(user.getDeviceToken())){
+                user.setDeviceToken(token);
+                Log.d(TAG, "validateAndUpdateUser: different tokens**********************************************");
+//                User user = new User();
+//                User userUpdate = new User();
+//                userUpdate.setDeviceToken(token);
+//                user.setUpdateUser(userUpdate);
+                //Update user token
+                Log.d(TAG, "validateAndUpdateUser: User" + user.getUpdateUser());
+                Observable<User> observable = RetrofitHelper.Factory.update(user, this.user.getId().get$oid());
+                observable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<User>() {
+                            @Override
+                            public void onCompleted() {
+                                Log.d(TAG, "onCompleted: ");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(TAG, "onError: " + e.toString());
+                            }
+
+                            @Override
+                            public void onNext(User user) {
+                                Log.d(TAG, "validateAndUpdateUser onNext: " + user.toString());
+                            }
+                        });
+            }
+        }
     }
 
     public void forgot(View view) {
