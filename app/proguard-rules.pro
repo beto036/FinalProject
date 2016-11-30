@@ -20,7 +20,7 @@
 -dontwarn rx.**
 -dontwarn retrofit.**
 -keep class rx.** {*;}
-
+-keep class android.support.v7.widget.SearchView { *; }
 -dontnote retrofit2.Platform
 # Platform used when running on RoboVM on iOS. Will not be used at runtime.
 -dontnote retrofit2.Platform$IOS$MainThreadExecutor

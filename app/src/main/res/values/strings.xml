@@ -28,5 +28,8 @@
     <string name="text_add_btn">Save</string>
     <string name="date_event_label">Date</string>
     <string name="time_event_hint">Time</string>
+    <string name="hint_search">Search</string>
+    <string name="search_hint">Search</string>
+    <string name="app_label">Search</string>
 
 </resources>

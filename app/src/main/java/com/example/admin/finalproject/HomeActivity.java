@@ -1,10 +1,12 @@
 package com.example.admin.finalproject;
 
-import android.app.DatePickerDialog;
-import android.content.Intent;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.example.admin.finalproject.entities.Event;
@@ -39,7 +40,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener{
 
     private static final String TAG = "HomeActivityTAG_";
     private User user;
@@ -57,6 +58,7 @@ public class HomeActivity extends AppCompatActivity
 
     private ArrayList<Event> mArrayList;
     private EventAdapter eventAdapter;
+    private boolean findVisible;
 
 
 
@@ -128,6 +130,10 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -146,6 +152,13 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem search = menu.findItem(R.id.search);
+        search.setVisible(findVisible);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -153,27 +166,30 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_add_event) {
+            findVisible = false;
             AddNewEventFragment addNewEventFragment = new AddNewEventFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,addNewEventFragment).commit();
 //            Intent intent = new Intent(this, MapsActivity.class);
 //            startActivity(intent);
         } else if (id == R.id.nav_find_event) {
+            findVisible = false;
             EventsFragment eventsFragment = new EventsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
 
             getEvents(false);
 
         } else if (id == R.id.nav_find_friend) {
-
+            findVisible = true;
         } else if (id == R.id.nav_friends) {
-
+            findVisible = false;
         } else if (id == R.id.nav_events) {
+            findVisible = false;
             EventsFragment eventsFragment = new EventsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
 
             getEvents(true);
         }
-
+        invalidateOptionsMenu();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -221,4 +237,14 @@ public class HomeActivity extends AppCompatActivity
                 });
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.d(TAG, "onQueryTextSubmit: ");
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }
