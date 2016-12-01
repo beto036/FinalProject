@@ -16,7 +16,7 @@ public interface NotificationService {
 
     @Headers({
             "Content-Type:application/json",
-            "Authorization:key=AIzaSyCGPLaDZc3ZFa3HhClGzcph_GKpd1pms3E"
+            "Authorization:key=AIzaSyA7HyCaG9Uyujv7GdXdZZT2u5kTAmZ5poo"
     })
     @POST("fcm/send")
     Call<SendNotificationResponse> sendNotification(@Body SendNotificationRequest request);

@@ -1,10 +1,13 @@
 
 package com.example.admin.finalproject.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User implements Parcelable{
 
 
     @SerializedName("$set")
@@ -203,4 +206,53 @@ public class User {
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
     }
+
+
+    protected User(Parcel in) {
+        updateUser = (User) in.readValue(User.class.getClassLoader());
+        id = (Id) in.readValue(Id.class.getClassLoader());
+        name = in.readString();
+        lastname = in.readString();
+        age = in.readByte() == 0x00 ? null : in.readInt();
+        email = in.readString();
+        username = in.readString();
+        password = in.readString();
+        deviceToken = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(updateUser);
+        dest.writeValue(id);
+        dest.writeString(name);
+        dest.writeString(lastname);
+        if (age == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(age);
+        }
+        dest.writeString(email);
+        dest.writeString(username);
+        dest.writeString(password);
+        dest.writeString(deviceToken);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

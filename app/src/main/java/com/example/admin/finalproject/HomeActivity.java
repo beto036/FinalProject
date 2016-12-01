@@ -23,6 +23,7 @@ import com.example.admin.finalproject.entities.Event;
 import com.example.admin.finalproject.entities.User;
 import com.example.admin.finalproject.helpers.EventAdapter;
 import com.example.admin.finalproject.helpers.RetrofitHelper;
+import com.example.admin.finalproject.helpers.UserAdapter;
 
 
 import java.text.ParseException;
@@ -56,6 +57,9 @@ public class HomeActivity extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
 
+    private ArrayList<User> mUserArrayList;
+    private UserAdapter userAdapter;
+
     private ArrayList<Event> mArrayList;
     private EventAdapter eventAdapter;
     private boolean findVisible;
@@ -70,6 +74,7 @@ public class HomeActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         mArrayList = new ArrayList<Event>();
+        mUserArrayList = new ArrayList<User>();
         user = ((App)getApplication()).getUser();
 
         Log.d(TAG, "onCreate: " + user.toString());
@@ -104,6 +109,16 @@ public class HomeActivity extends AppCompatActivity
         userTxt.setText(user.getName() + " " + user.getLastname());
         mailTxt.setText(user.getEmail());
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void fillUserRecycler(List<User> users){
+        mUserArrayList.clear();
+        mUserArrayList.addAll(users);
+        userAdapter = new UserAdapter(mUserArrayList);
+        mRecyclerView = (RecyclerView) findViewById(R.id.fUsersRecycler);
+        mRecyclerView.setAdapter(userAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        userAdapter.notifyDataSetChanged();
     }
 
     private void fillRecycler(List<Event> events) {
@@ -180,6 +195,8 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_find_friend) {
             findVisible = true;
+            UsersFragment usersFragment = new UsersFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,usersFragment).commit();
         } else if (id == R.id.nav_friends) {
             findVisible = false;
         } else if (id == R.id.nav_events) {
@@ -209,7 +226,7 @@ public class HomeActivity extends AppCompatActivity
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d(TAG, "onError: " + e.toString());
                     }
 
                     @Override
@@ -237,9 +254,33 @@ public class HomeActivity extends AppCompatActivity
                 });
     }
 
+    private void getUsers(String email){
+        Observable<List<User>> observable = RetrofitHelper.Factory.getUserByEmail(email);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<User>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(List<User> users) {
+                        fillUserRecycler(users);
+                    }
+                });
+    }
+
     @Override
     public boolean onQueryTextSubmit(String query) {
         Log.d(TAG, "onQueryTextSubmit: ");
+        getUsers(query);
         return false;
     }
 
