@@ -20,8 +20,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.admin.finalproject.entities.Event;
+import com.example.admin.finalproject.entities.Friendship;
 import com.example.admin.finalproject.entities.User;
 import com.example.admin.finalproject.helpers.EventAdapter;
+import com.example.admin.finalproject.helpers.FriendsAdapter;
 import com.example.admin.finalproject.helpers.RetrofitHelper;
 import com.example.admin.finalproject.helpers.UserAdapter;
 
@@ -57,6 +59,9 @@ public class HomeActivity extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
 
+    private ArrayList<Friendship> mFriendsArrayList;
+    private FriendsAdapter friendsAdapter;
+
     private ArrayList<User> mUserArrayList;
     private UserAdapter userAdapter;
 
@@ -75,6 +80,7 @@ public class HomeActivity extends AppCompatActivity
 
         mArrayList = new ArrayList<Event>();
         mUserArrayList = new ArrayList<User>();
+        mFriendsArrayList = new ArrayList<Friendship>();
         user = ((App)getApplication()).getUser();
 
         Log.d(TAG, "onCreate: " + user.toString());
@@ -129,6 +135,16 @@ public class HomeActivity extends AppCompatActivity
         mRecyclerView.setAdapter(eventAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         eventAdapter.notifyDataSetChanged();
+    }
+
+    private void fillFriendsRecycler(List<Friendship> friendships) {
+        mFriendsArrayList.clear();
+        mFriendsArrayList.addAll(friendships);
+        friendsAdapter = new FriendsAdapter(mFriendsArrayList);
+        mRecyclerView = (RecyclerView) findViewById(R.id.fFriendsRecycler);
+        mRecyclerView.setAdapter(friendsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        friendsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -199,6 +215,9 @@ public class HomeActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,usersFragment).commit();
         } else if (id == R.id.nav_friends) {
             findVisible = false;
+            FriendsFragment friendsFragment = new FriendsFragment();
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,friendsFragment).commit();
+            this.getFriends();
         } else if (id == R.id.nav_events) {
             findVisible = false;
             EventsFragment eventsFragment = new EventsFragment();
@@ -273,6 +292,29 @@ public class HomeActivity extends AppCompatActivity
                     @Override
                     public void onNext(List<User> users) {
                         fillUserRecycler(users);
+                    }
+                });
+    }
+
+    public void getFriends(){
+        Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(user, null);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Friendship>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(List<Friendship> friendships) {
+                        fillFriendsRecycler(friendships);
                     }
                 });
     }

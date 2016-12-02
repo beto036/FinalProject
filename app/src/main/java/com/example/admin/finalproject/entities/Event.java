@@ -9,6 +9,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Event implements Parcelable{
 
+    @SerializedName("_id")
+    @Expose
+    private Id id;
     @SerializedName("event")
     @Expose
     private String event;
@@ -173,7 +176,16 @@ public class Event implements Parcelable{
                 '}';
     }
 
+    public Id getId() {
+        return id;
+    }
+
+    public void setId(Id id) {
+        this.id = id;
+    }
+
     protected Event(Parcel in) {
+        id = (Id) in.readValue(Id.class.getClassLoader());
         event = in.readString();
         description = in.readString();
         latitude = in.readByte() == 0x00 ? null : in.readInt();
@@ -192,6 +204,7 @@ public class Event implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
         dest.writeString(event);
         dest.writeString(description);
         dest.writeByte((byte) (0x01));

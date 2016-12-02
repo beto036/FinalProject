@@ -27,4 +27,7 @@ public interface UserService {
     @PUT("collections/user/{id}")
     Observable<User> updateUser(@Path("id") String id, @Query("apiKey") String apiKey, @Body User user);
 
+    @GET("collections/user/{id}")
+    Observable<User> getUserbyId(@Path("id")String id, @Query("apiKey") String apiKey);
+
 }

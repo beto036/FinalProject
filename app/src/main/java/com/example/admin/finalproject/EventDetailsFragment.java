@@ -4,27 +4,38 @@ package com.example.admin.finalproject;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.admin.finalproject.entities.Event;
+import com.example.admin.finalproject.entities.Friendship;
+import com.example.admin.finalproject.entities.Invitation;
+import com.example.admin.finalproject.entities.User;
+import com.example.admin.finalproject.helpers.RetrofitHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -37,6 +48,9 @@ public class EventDetailsFragment extends Fragment {
 
     @BindView(R.id.fEventDetailTxtDesc)
     public TextView description;
+
+    @BindView(R.id.fEventDetailsInviteBtn)
+    public Button invite;
 
     @BindView(R.id.fEventDetailsMap)
     public MapView mMapView;
@@ -61,6 +75,15 @@ public class EventDetailsFragment extends Fragment {
         unbinder = ButterKnife.bind(this,view);
 
         event = this.getArguments().getParcelable("EVENT");
+        if(event.getIsAdmin()){
+            invite.setVisibility(View.VISIBLE);
+            invite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getInvitations(event.getId().get$oid());
+                }
+            });
+        }
         title.setText(event.getEvent());
         description.setText(event.getDescription());
 
@@ -123,6 +146,70 @@ public class EventDetailsFragment extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    public void getFriends(final List<Invitation> invitations, final User user){
+        Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(user, null);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Friendship>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(List<Friendship> friendships) {
+                        ArrayList<Friendship> friendshipArrayList = new ArrayList<Friendship>(friendships);
+                        Iterator<Friendship> friendshipIterator = friendshipArrayList.iterator();
+                        while (friendshipIterator.hasNext()){
+                            Friendship friendship = friendshipIterator.next();
+                            String userId = !user.getId().get$oid().equals(friendship.getReceiverId()) ? friendship.getReceiverId() : friendship.getSenderId();
+                            for (Invitation invitation : invitations){
+                                if(invitation.getUserId().equals(userId)){
+                                    friendshipIterator.remove();
+                                }
+                            }
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList("FRIENDSHIP_LIST", friendshipArrayList);
+                        bundle.putParcelable("CURRENT_EVENT", event);
+                        UsersFragmentDialog usersFragmentDialog = new UsersFragmentDialog();
+                        usersFragmentDialog.setArguments(bundle);
+                        usersFragmentDialog.show(getActivity().getSupportFragmentManager(),"DIALOG_TAG");
+                    }
+                });
+    }
+
+    private void getInvitations(String eventId){
+        final User user = ((App)this.getContext().getApplicationContext()).getUser();
+        Observable<List<Invitation>> observable = RetrofitHelper.Factory.getInvitations(eventId);
+
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Invitation>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Invitation> invitations) {
+                        getFriends(invitations, user);
+                    }
+                });
     }
 
 }

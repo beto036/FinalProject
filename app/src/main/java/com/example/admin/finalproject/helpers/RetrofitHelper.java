@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.admin.finalproject.entities.Event;
 import com.example.admin.finalproject.entities.Friendship;
+import com.example.admin.finalproject.entities.Invitation;
 import com.example.admin.finalproject.entities.User;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
@@ -56,6 +57,12 @@ public class RetrofitHelper {
             return userService.getUser(query, API_KEY);
         }
 
+        public static Observable<User> getUserById(String userId) {
+            Retrofit retrofit = create();
+            UserService userService = retrofit.create(UserService.class);
+            return userService.getUserbyId(userId,API_KEY);
+        }
+
         public static Observable<User> insert(User user) {
             Retrofit retrofit = create();
             UserService userService = retrofit.create(UserService.class);
@@ -84,11 +91,19 @@ public class RetrofitHelper {
 
         public static Observable<List<Friendship>> getFriends(User userApp, User userFriend) {
             Retrofit retrofit = create();
-            String q = "{\"$or\":[{\"senderId\":\"" + userApp.getId().get$oid()
-                    + "\",\"receiverId\":\"" + userFriend.getId().get$oid() + "\"}," +
-                    "{\"senderId\":\"" + userFriend.getId().get$oid()
-                    + "\",\"receiverId\":\"" + userApp.getId().get$oid() + "\"}"+
-                    "]}";
+            String q = "";
+            if(userFriend == null){
+                q = "{\"$or\":[{\"senderId\":\"" + userApp.getId().get$oid()+"\"}"
+                        + ",{\"receiverId\":\"" + userApp.getId().get$oid() + "\"}]"
+                        + ",\"declined\":false,\"isRequest\":false}";
+            }
+            else{
+                q = "{\"$or\":[{\"senderId\":\"" + userApp.getId().get$oid()
+                        + "\",\"receiverId\":\"" + userFriend.getId().get$oid() + "\"}," +
+                        "{\"senderId\":\"" + userFriend.getId().get$oid()
+                        + "\",\"receiverId\":\"" + userApp.getId().get$oid() + "\"}]}";
+            }
+
             Log.d(TAG, "getFriends: " + q);
             FriendshipService friendshipService = retrofit.create(FriendshipService.class);
             return friendshipService.getFriends(q, API_KEY);
@@ -104,6 +119,26 @@ public class RetrofitHelper {
             Retrofit retrofit = create();
             FriendshipService friendshipService = retrofit.create(FriendshipService.class);
             return friendshipService.updateFriend(friendship.getId().get$oid(), API_KEY, friendship);
+        }
+
+//        public static Observable<List<Invitation>> create(String user, String pass) {
+//            Retrofit retrofit = create();
+//            UserService userService = retrofit.create(UserService.class);
+//            String query = "{\"username\":\"" + user + "\", \"password\":\"" + pass + "\"}";
+//            return userService.getUser(query, API_KEY);
+//        }
+
+        public static Observable<Invitation> insertInvitation(Invitation invitation) {
+            Retrofit retrofit = create();
+            InvitationService invitationService = retrofit.create(InvitationService.class);
+            return invitationService.insertInvitation(API_KEY,invitation);
+        }
+
+        public static Observable<List<Invitation>> getInvitations(String eventId) {
+            Retrofit retrofit = create();
+            InvitationService invitationService = retrofit.create(InvitationService.class);
+            String query = "{\"eventId\":\"" + eventId + "\"}";
+            return invitationService.getInvitations(query, API_KEY);
         }
     }
 

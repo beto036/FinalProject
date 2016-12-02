@@ -160,6 +160,7 @@ public class UsersDetailFragment extends Fragment {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted: ");
+                        sendToFriendsView();
                     }
 
                     @Override
@@ -207,11 +208,13 @@ public class UsersDetailFragment extends Fragment {
                                     SendNotificationResponse sendNotificationResponse = response.body();
                                     Log.d(TAG, "onResponse: " + sendNotificationResponse);
                                     if(sendNotificationResponse.getSuccess() == 1) send.setEnabled(false);
+                                    sendToFriendsView();
                                 }
 
                                 @Override
                                 public void onFailure(Call<SendNotificationResponse> call, Throwable t) {
                                     Log.d(TAG, "onFailure: " + t.toString());
+                                    sendToFriendsView();
                                 }
                             });
                         }
@@ -227,6 +230,12 @@ public class UsersDetailFragment extends Fragment {
                         saved = friendship != null;
                     }
                 });
+    }
+
+    private void sendToFriendsView(){
+        FriendsFragment friendsFragment = new FriendsFragment();
+        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,friendsFragment).commit();
+        ((HomeActivity)this.getActivity()).getFriends();
     }
 
 }
