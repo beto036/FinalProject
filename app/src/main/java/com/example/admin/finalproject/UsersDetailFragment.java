@@ -235,7 +235,7 @@ public class UsersDetailFragment extends Fragment {
     private void sendToFriendsView(){
         FriendsFragment friendsFragment = new FriendsFragment();
         this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,friendsFragment).commit();
-        ((HomeActivity)this.getActivity()).getFriends();
+        ((HomeActivity)this.getActivity()).getFriends(false);
     }
 
 }

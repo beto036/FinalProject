@@ -15,6 +15,10 @@
             android:icon="@mipmap/ic_event_black"
             android:title="My Events" />
         <item
+            android:id="@+id/nav_invitations"
+            android:icon="@mipmap/ic_inbox_black"
+            android:title="My Invitations" />
+        <item
             android:id="@+id/nav_find_friend"
             android:icon="@mipmap/ic_person_add_black"
             android:title="Find Friend" />
@@ -22,6 +26,10 @@
             android:id="@+id/nav_friends"
             android:icon="@mipmap/ic_people_black"
             android:title="My Friends" />
+        <item
+            android:id="@+id/nav_friend_requests"
+            android:icon="@mipmap/ic_mail_black"
+            android:title="My Friend Requests" />
     </group>
 
     <!--<item android:title="Communicate">-->

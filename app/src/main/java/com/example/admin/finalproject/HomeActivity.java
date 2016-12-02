@@ -21,9 +21,12 @@ import android.widget.TextView;
 
 import com.example.admin.finalproject.entities.Event;
 import com.example.admin.finalproject.entities.Friendship;
+import com.example.admin.finalproject.entities.Invitation;
 import com.example.admin.finalproject.entities.User;
 import com.example.admin.finalproject.helpers.EventAdapter;
+import com.example.admin.finalproject.helpers.FriendRequestsAdapter;
 import com.example.admin.finalproject.helpers.FriendsAdapter;
+import com.example.admin.finalproject.helpers.InvitationsAdapter;
 import com.example.admin.finalproject.helpers.RetrofitHelper;
 import com.example.admin.finalproject.helpers.UserAdapter;
 
@@ -59,11 +62,16 @@ public class HomeActivity extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
 
+    private ArrayList<Invitation> mInvitationsArrayList;
+    private InvitationsAdapter invitationsAdapter;
+
     private ArrayList<Friendship> mFriendsArrayList;
     private FriendsAdapter friendsAdapter;
 
     private ArrayList<User> mUserArrayList;
     private UserAdapter userAdapter;
+
+    private FriendRequestsAdapter friendRequestsAdapter;
 
     private ArrayList<Event> mArrayList;
     private EventAdapter eventAdapter;
@@ -81,6 +89,7 @@ public class HomeActivity extends AppCompatActivity
         mArrayList = new ArrayList<Event>();
         mUserArrayList = new ArrayList<User>();
         mFriendsArrayList = new ArrayList<Friendship>();
+        mInvitationsArrayList = new ArrayList<Invitation>();
         user = ((App)getApplication()).getUser();
 
         Log.d(TAG, "onCreate: " + user.toString());
@@ -147,6 +156,26 @@ public class HomeActivity extends AppCompatActivity
         friendsAdapter.notifyDataSetChanged();
     }
 
+    private void fillRequestRecycler(List<Friendship> requests) {
+        mFriendsArrayList.clear();
+        mFriendsArrayList.addAll(requests);
+        friendRequestsAdapter = new FriendRequestsAdapter(mFriendsArrayList);
+        mRecyclerView = (RecyclerView) findViewById(R.id.fRequestsRecycler);
+        mRecyclerView.setAdapter(friendRequestsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        friendRequestsAdapter.notifyDataSetChanged();
+    }
+
+    private void fillInvitationsRecycler(List<Invitation> invitations) {
+        mInvitationsArrayList.clear();
+        mInvitationsArrayList.addAll(invitations);
+        invitationsAdapter = new InvitationsAdapter(mInvitationsArrayList);
+        mRecyclerView = (RecyclerView) findViewById(R.id.fInvitationsRecycler);
+        mRecyclerView.setAdapter(invitationsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        invitationsAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -200,8 +229,6 @@ public class HomeActivity extends AppCompatActivity
             findVisible = false;
             AddNewEventFragment addNewEventFragment = new AddNewEventFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,addNewEventFragment).commit();
-//            Intent intent = new Intent(this, MapsActivity.class);
-//            startActivity(intent);
         } else if (id == R.id.nav_find_event) {
             findVisible = false;
             EventsFragment eventsFragment = new EventsFragment();
@@ -217,13 +244,25 @@ public class HomeActivity extends AppCompatActivity
             findVisible = false;
             FriendsFragment friendsFragment = new FriendsFragment();
             this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,friendsFragment).commit();
-            this.getFriends();
+            this.getFriends(false);
         } else if (id == R.id.nav_events) {
             findVisible = false;
             EventsFragment eventsFragment = new EventsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
 
             getEvents(true);
+        }else if (id == R.id.nav_invitations) {
+            findVisible = false;
+            String query = "{\"userId\":\"" + user.getId().get$oid() + "\","+
+                    "\"declined\":false, \"confirmed\":false}";
+            InvitationsFragment invitationsFragment = new InvitationsFragment();
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,invitationsFragment).commit();
+            getInvitations(query);
+        }else if (id == R.id.nav_friend_requests) {
+            findVisible = false;
+            FriendRequestsFragment friendRequestsFragment = new FriendRequestsFragment();
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,friendRequestsFragment).commit();
+            getFriends(true);
         }
         invalidateOptionsMenu();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -296,8 +335,8 @@ public class HomeActivity extends AppCompatActivity
                 });
     }
 
-    public void getFriends(){
-        Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(user, null);
+    public void getFriends(final boolean isRequest){
+        Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(user, null, isRequest);
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -314,7 +353,33 @@ public class HomeActivity extends AppCompatActivity
 
                     @Override
                     public void onNext(List<Friendship> friendships) {
-                        fillFriendsRecycler(friendships);
+                        if(isRequest)
+                            fillRequestRecycler(friendships);
+                        else
+                            fillFriendsRecycler(friendships);
+                    }
+                });
+    }
+
+    public void getInvitations(String query){
+        Observable<List<Invitation>> observable = RetrofitHelper.Factory.getInvitations(query);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Invitation>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(List<Invitation> invitations) {
+                        fillInvitationsRecycler(invitations);
                     }
                 });
     }

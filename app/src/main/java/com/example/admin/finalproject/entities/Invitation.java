@@ -36,6 +36,9 @@ public class Invitation {
     @SerializedName("confirmed")
     @Expose
     private Boolean confirmed;
+    @SerializedName("declined")
+    @Expose
+    private Boolean declined;
     @SerializedName("latitude")
     @Expose
     private double latitude;
@@ -237,5 +240,32 @@ public class Invitation {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public Boolean getDeclined() {
+        return declined;
+    }
+
+    public void setDeclined(Boolean declined) {
+        this.declined = declined;
+    }
+
+    @Override
+    public String toString() {
+        return "Invitation{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", eventId='" + eventId + '\'' +
+                ", eventTitle='" + eventTitle + '\'' +
+                ", eventDesc='" + eventDesc + '\'' +
+                ", eventTime='" + eventTime + '\'' +
+                ", confirmed=" + confirmed +
+                ", declined=" + declined +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

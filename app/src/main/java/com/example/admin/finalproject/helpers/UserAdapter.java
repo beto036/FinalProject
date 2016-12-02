@@ -89,7 +89,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             final User userApp = ((App)context.getApplicationContext()).getUser();
             Log.d(TAG, "getData: userApp*****************************************************" + userApp);
             Log.d(TAG, "getData: userApp*****************************************************" + user);
-            Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(userApp,user);
+            Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(userApp,user,false);
 
             observable
                     .subscribeOn(Schedulers.io())

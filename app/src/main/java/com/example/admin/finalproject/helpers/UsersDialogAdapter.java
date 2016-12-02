@@ -114,6 +114,9 @@ public class UsersDialogAdapter extends RecyclerView.Adapter<UsersDialogAdapter.
                     invitation.setEventId(event.getId().get$oid());
                     invitation.setEventTitle(event.getEvent());
                     invitation.setEventTime(event.getDate());
+                    invitation.setLongitude(event.getLongitude());
+                    invitation.setLatitude(event.getLatitude());
+                    invitation.setDeclined(false);
                     saveAndSendNotification(invitation);
                 }
             });

@@ -149,7 +149,7 @@ public class EventDetailsFragment extends Fragment {
     }
 
     public void getFriends(final List<Invitation> invitations, final User user){
-        Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(user, null);
+        Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(user, null, false);
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -189,7 +189,8 @@ public class EventDetailsFragment extends Fragment {
 
     private void getInvitations(String eventId){
         final User user = ((App)this.getContext().getApplicationContext()).getUser();
-        Observable<List<Invitation>> observable = RetrofitHelper.Factory.getInvitations(eventId);
+        String query = "{\"eventId\":\"" + eventId + "\"}";
+        Observable<List<Invitation>> observable = RetrofitHelper.Factory.getInvitations(query);
 
         observable
                 .subscribeOn(Schedulers.io())

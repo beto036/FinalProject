@@ -89,10 +89,14 @@ public class RetrofitHelper {
             return userService.updateUser(oid, API_KEY, user);
         }
 
-        public static Observable<List<Friendship>> getFriends(User userApp, User userFriend) {
+        public static Observable<List<Friendship>> getFriends(User userApp, User userFriend, boolean isRequest) {
             Retrofit retrofit = create();
             String q = "";
-            if(userFriend == null){
+            if(isRequest){
+                q = "{\"receiverId\":\"" + userApp.getId().get$oid() + "\"" +
+                        ",\"declined\":false, \"isRequest\":true}";
+            }
+            else if(userFriend == null){
                 q = "{\"$or\":[{\"senderId\":\"" + userApp.getId().get$oid()+"\"}"
                         + ",{\"receiverId\":\"" + userApp.getId().get$oid() + "\"}]"
                         + ",\"declined\":false,\"isRequest\":false}";
@@ -121,24 +125,22 @@ public class RetrofitHelper {
             return friendshipService.updateFriend(friendship.getId().get$oid(), API_KEY, friendship);
         }
 
-//        public static Observable<List<Invitation>> create(String user, String pass) {
-//            Retrofit retrofit = create();
-//            UserService userService = retrofit.create(UserService.class);
-//            String query = "{\"username\":\"" + user + "\", \"password\":\"" + pass + "\"}";
-//            return userService.getUser(query, API_KEY);
-//        }
-
         public static Observable<Invitation> insertInvitation(Invitation invitation) {
             Retrofit retrofit = create();
             InvitationService invitationService = retrofit.create(InvitationService.class);
             return invitationService.insertInvitation(API_KEY,invitation);
         }
 
-        public static Observable<List<Invitation>> getInvitations(String eventId) {
+        public static Observable<List<Invitation>> getInvitations(String query) {
             Retrofit retrofit = create();
             InvitationService invitationService = retrofit.create(InvitationService.class);
-            String query = "{\"eventId\":\"" + eventId + "\"}";
             return invitationService.getInvitations(query, API_KEY);
+        }
+
+        public static Observable<Invitation> updateInvitation(Invitation invitation) {
+            Retrofit retrofit = create();
+            InvitationService invitationService = retrofit.create(InvitationService.class);
+            return invitationService.updateInvitation(invitation.getId().get$oid(), API_KEY, invitation);
         }
     }
 
