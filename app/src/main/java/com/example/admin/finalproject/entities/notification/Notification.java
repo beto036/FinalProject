@@ -1,6 +1,8 @@
 
 package com.example.admin.finalproject.entities.notification;
 
+import android.net.Uri;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,6 +14,9 @@ public class Notification {
     @SerializedName("body")
     @Expose
     private String body;
+    @SerializedName("sound")
+    @Expose
+    private Uri sound;
 
     /**
      * 
@@ -55,5 +60,13 @@ public class Notification {
                 "title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 '}';
+    }
+
+    public Uri getSound() {
+        return sound;
+    }
+
+    public void setSound(Uri sound) {
+        this.sound = sound;
     }
 }

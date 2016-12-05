@@ -1,6 +1,8 @@
 package com.example.admin.finalproject;
 
 
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -197,6 +199,8 @@ public class UsersDetailFragment extends Fragment {
                             data.setScore("654654");
                             Notification notification = new Notification();
                             notification.setTitle("Friend Request");
+                            notification.setBody(user.getName() + " want to be your friend");
+                            notification.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                             sendNotificationRequest.setData(data);
                             sendNotificationRequest.setNotification(notification);
 

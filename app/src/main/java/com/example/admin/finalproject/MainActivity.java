@@ -14,7 +14,9 @@ import android.widget.EditText;
 import com.example.admin.finalproject.entities.User;
 import com.example.admin.finalproject.helpers.RetrofitHelper;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 import butterknife.BindView;
@@ -53,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        Bundle bundle = getIntent().getExtras();
+        Log.d(TAG, "onCreate: " + bundle);
+        if(bundle != null && !bundle.isEmpty()) {
+            Set<String> set = bundle.keySet();
+            Iterator<String> iterator = set.iterator();
+            while (iterator.hasNext()) {
+                String a = iterator.next();
+                Log.d(TAG, "onCreate: " + bundle.get(a));
+            }
+        }
 
     }
 
