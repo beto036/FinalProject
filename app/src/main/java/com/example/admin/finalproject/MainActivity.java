@@ -92,12 +92,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted: ");
                         alertDialog.dismiss();
+
                         if(loginSuccess){
                             ((App)getApplication()).setUser(user);
                             Log.d(TAG, "onCompleted: " + user);
                             validateAndUpdateUser();
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                             startActivity(intent);
+                            finish();
                         }else{
                             failLoginAlert = new AlertDialog.Builder(MainActivity.this)
                                     .setMessage("Please check your username/password. If you are not a user yet please Sign Up.")

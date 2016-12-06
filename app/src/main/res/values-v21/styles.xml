@@ -7,6 +7,23 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Button1" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Recycler" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+    </style>
+
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -21,6 +38,31 @@
 
         <item name="colorButtonNormal">@color/colorPrimaryDark</item>
         <item name="android:colorButtonNormal">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="AppTheme.Dark1" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/aluminum</item>
+        <item name="colorControlActivated">@color/colorPrimaryLight</item>
+        <item name="colorControlHighlight">@color/colorPrimaryLight</item>
+        <item name="android:textColorHint">@color/iron</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Dark2" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/aluminum</item>
+        <item name="colorControlActivated">@color/colorPrimaryLight</item>
+        <item name="colorControlHighlight">@color/colorPrimaryLight</item>
+        <item name="android:textColorHint">@color/iron</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">

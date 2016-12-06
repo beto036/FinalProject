@@ -1,9 +1,11 @@
 package com.example.admin.finalproject;
 
-import android.app.SearchManager;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -17,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.example.admin.finalproject.entities.Event;
@@ -57,6 +61,8 @@ public class HomeActivity extends AppCompatActivity
 //    @BindView(R.id.navHeadHomeTxtMail)
     public TextView mailTxt;
 
+    public SearchView searchView;
+
     @BindView(R.id.nav_view)
     public NavigationView navigationView;
 
@@ -77,6 +83,8 @@ public class HomeActivity extends AppCompatActivity
     private EventAdapter eventAdapter;
     private boolean findVisible;
 
+    private ProgressDialog alertDialog;
+    private AlertDialog failAlert;
 
 
     @Override
@@ -96,20 +104,12 @@ public class HomeActivity extends AppCompatActivity
 
         EventsFragment eventsFragment = new EventsFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
-
+        showProgress("Scheduled Events", "Loading...");
         getEvents(false);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -123,6 +123,7 @@ public class HomeActivity extends AppCompatActivity
         mailTxt = (TextView) view.findViewById(R.id.navHeadHomeTxtMail);
         userTxt.setText(user.getName() + " " + user.getLastname());
         mailTxt.setText(user.getEmail());
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -192,8 +193,7 @@ public class HomeActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.home, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         return true;
     }
 
@@ -205,9 +205,9 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -216,6 +216,12 @@ public class HomeActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem search = menu.findItem(R.id.search);
         search.setVisible(findVisible);
+        if(findVisible){
+            searchView.setFocusable(true);
+            searchView.setIconified(false);
+            searchView.requestFocusFromTouch();
+            searchView.setOnQueryTextListener(this);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -229,27 +235,33 @@ public class HomeActivity extends AppCompatActivity
             findVisible = false;
             AddNewEventFragment addNewEventFragment = new AddNewEventFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,addNewEventFragment).commit();
+            getSupportActionBar().setTitle("New Event");
         } else if (id == R.id.nav_find_event) {
             findVisible = false;
             EventsFragment eventsFragment = new EventsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
-
+            getSupportActionBar().setTitle("Scheduled Events");
+            showProgress("Scheduled Events", "Loading...");
             getEvents(false);
 
         } else if (id == R.id.nav_find_friend) {
             findVisible = true;
             UsersFragment usersFragment = new UsersFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,usersFragment).commit();
+            getSupportActionBar().setTitle("Find Friend");
         } else if (id == R.id.nav_friends) {
             findVisible = false;
             FriendsFragment friendsFragment = new FriendsFragment();
             this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,friendsFragment).commit();
+            getSupportActionBar().setTitle("My Friends");
+            showProgress("Friends","Loading...");
             this.getFriends(false);
         } else if (id == R.id.nav_events) {
             findVisible = false;
             EventsFragment eventsFragment = new EventsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
-
+            getSupportActionBar().setTitle("My Events");
+            showProgress("Events", "Loading...");
             getEvents(true);
         }else if (id == R.id.nav_invitations) {
             findVisible = false;
@@ -257,17 +269,36 @@ public class HomeActivity extends AppCompatActivity
                     "\"declined\":false, \"confirmed\":false}";
             InvitationsFragment invitationsFragment = new InvitationsFragment();
             this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,invitationsFragment).commit();
+            getSupportActionBar().setTitle("My Invitations");
+            showProgress("Invitations", "Loading");
             getInvitations(query);
         }else if (id == R.id.nav_friend_requests) {
             findVisible = false;
             FriendRequestsFragment friendRequestsFragment = new FriendRequestsFragment();
             this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,friendRequestsFragment).commit();
+            getSupportActionBar().setTitle("Friend Requests");
+            showProgress("Requests","Loading...");
             getFriends(true);
         }
         invalidateOptionsMenu();
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showProgress(String title, String message) {
+        alertDialog = new ProgressDialog(this);
+        // Setting Dialog Title
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     public void getEvents(boolean isAdmin){
@@ -279,12 +310,14 @@ public class HomeActivity extends AppCompatActivity
                 .subscribe(new Observer<List<Event>>() {
                     @Override
                     public void onCompleted() {
-
+                        alertDialog.dismiss();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError: " + e.toString());
+                        alertDialog.dismiss();
+                        showErrorDialog();
                     }
 
                     @Override
@@ -292,15 +325,9 @@ public class HomeActivity extends AppCompatActivity
                         Iterator<Event> iterator = events.iterator();
                         while(iterator.hasNext()) {
                             Event event = iterator.next();
-                            Log.d(TAG, "onNext: Simple date format");
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                            Log.d(TAG, "onNext: Initialized");
                             try {
-                                Log.d(TAG, "onNext: Parsing date");
                                 Date date = sdf.parse(event.getDate());
-                                Log.d(TAG, "onNext: " + date.toString());
-                                Log.d(TAG, "onNext: " + event.toString());
-                                Log.d(TAG, "onNext: " + (date.compareTo(new Date()) < 0));
                                 if(date.compareTo(new Date()) < 0)
                                     iterator.remove();
                             } catch (ParseException e) {
@@ -312,6 +339,14 @@ public class HomeActivity extends AppCompatActivity
                 });
     }
 
+    private void showErrorDialog() {
+        failAlert = new AlertDialog.Builder(HomeActivity.this)
+                .setMessage("The service is unavailable. Please try later.")
+                .setTitle("Error")
+                .setPositiveButton("OK",null).create();
+        failAlert.show();
+    }
+
     private void getUsers(String email){
         Observable<List<User>> observable = RetrofitHelper.Factory.getUserByEmail(email);
         observable
@@ -320,12 +355,14 @@ public class HomeActivity extends AppCompatActivity
                 .subscribe(new Observer<List<User>>() {
                     @Override
                     public void onCompleted() {
-
+                        alertDialog.dismiss();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError: " + e.toString());
+                        alertDialog.dismiss();
+                        showErrorDialog();
                     }
 
                     @Override
@@ -343,12 +380,14 @@ public class HomeActivity extends AppCompatActivity
                 .subscribe(new Observer<List<Friendship>>() {
                     @Override
                     public void onCompleted() {
-
+                        alertDialog.dismiss();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError: " + e.toString());
+                        alertDialog.dismiss();
+                        showErrorDialog();
                     }
 
                     @Override
@@ -369,12 +408,14 @@ public class HomeActivity extends AppCompatActivity
                 .subscribe(new Observer<List<Invitation>>() {
                     @Override
                     public void onCompleted() {
-
+                        alertDialog.dismiss();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError: " + e.toString());
+                        alertDialog.dismiss();
+                        showErrorDialog();
                     }
 
                     @Override
@@ -387,6 +428,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
         Log.d(TAG, "onQueryTextSubmit: ");
+        showProgress("Find Friends", "Searching...");
         getUsers(query);
         return false;
     }
@@ -394,5 +436,12 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    public void logout(MenuItem item) {
+        ((App)getApplication()).setUser(null);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

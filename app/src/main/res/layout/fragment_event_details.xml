@@ -2,8 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.example.admin.finalproject.EventDetailsFragment">
+    tools:context="com.example.admin.finalproject.EventDetailsFragment"
+    app:theme="@style/AppTheme.Dark2">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -29,6 +31,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:text="Invite Friends"
+            android:theme="@style/Button1"
             android:visibility="invisible"/>
     </LinearLayout>
 

@@ -107,7 +107,7 @@ public class EventDetailsFragment extends Fragment {
 
                 // For dropping a marker at a point on the Map
                 LatLng sydney = new LatLng(event.getLatitude(),event.getLongitude());
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+                googleMap.addMarker(new MarkerOptions().position(sydney).title(event.getEvent()).snippet(event.getDescription()));
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();

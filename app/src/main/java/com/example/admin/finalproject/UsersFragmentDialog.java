@@ -72,7 +72,7 @@ public class UsersFragmentDialog extends DialogFragment {
         mRecyclerView.setAdapter(usersDialogAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
         usersDialogAdapter.notifyDataSetChanged();
-        AlertDialog.Builder b=  new  AlertDialog.Builder(getActivity())
+        AlertDialog.Builder b=  new  AlertDialog.Builder(getActivity(),R.style.AppTheme_Dark)
                 .setTitle("Your Friends")
                 .setView(v)
                 .setPositiveButton("OK",

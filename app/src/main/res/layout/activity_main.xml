@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/backgr">
+    android:background="@color/colorPrimaryDark">
 <LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
@@ -49,30 +49,6 @@
             android:hint="@string/password_hint" />
 
     </android.support.design.widget.TextInputLayout>
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <!--<Button-->
-            <!--android:id="@+id/aMainBtnSignUp"-->
-            <!--android:text="Not a user yet?"-->
-            <!--style="@style/ButtonLink"-->
-            <!--android:onClick="signUp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"/>-->
-
-
-        <!--<Button-->
-            <!--android:id="@+id/aMainBtnForgot"-->
-            <!--android:text="Forgot username or password"-->
-            <!--android:onClick="forgot"-->
-            <!--style="@style/ButtonLink"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"/>-->
-    <!--</LinearLayout>-->
 
     <Button
         android:layout_width="match_parent"

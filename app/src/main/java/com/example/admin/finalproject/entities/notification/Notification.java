@@ -17,6 +17,9 @@ public class Notification {
     @SerializedName("sound")
     @Expose
     private Uri sound;
+    @SerializedName("click_action")
+    @Expose
+    private String clickAction;
 
     /**
      * 
@@ -68,5 +71,13 @@ public class Notification {
 
     public void setSound(Uri sound) {
         this.sound = sound;
+    }
+
+    public String getClickAction() {
+        return clickAction;
+    }
+
+    public void setClickAction(String clickAction) {
+        this.clickAction = clickAction;
     }
 }
