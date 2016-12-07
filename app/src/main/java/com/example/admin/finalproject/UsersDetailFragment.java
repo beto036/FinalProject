@@ -1,7 +1,6 @@
 package com.example.admin.finalproject;
 
 
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -183,7 +182,7 @@ public class UsersDetailFragment extends Fragment {
         unbinder.unbind();
     }
 
-    private void saveAndSendRequest(Friendship friendship){
+    private void saveAndSendRequest(final Friendship friendship){
         Observable<Friendship> observable = RetrofitHelper.Factory.saveFriend(friendship);
         observable
                 .subscribeOn(Schedulers.io())
@@ -196,10 +195,11 @@ public class UsersDetailFragment extends Fragment {
                             SendNotificationRequest sendNotificationRequest = new SendNotificationRequest();
                             sendNotificationRequest.setTo(user.getDeviceToken());
                             Data data = new Data();
-                            data.setScore("654654");
+                            data.setAction("friendship");
                             Notification notification = new Notification();
                             notification.setTitle("Friend Request");
-                            notification.setBody(user.getName() + " want to be your friend");
+                            notification.setBody(friendship.getNameSender() + " want to be your friend");
+                            notification.setClickAction("ADD_FRIEND_ACTION");
                             notification.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                             sendNotificationRequest.setData(data);
                             sendNotificationRequest.setNotification(notification);

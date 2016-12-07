@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Data {
 
-    @SerializedName("score")
+    @SerializedName("action")
     @Expose
-    private String score;
+    private String action;
     @SerializedName("time")
     @Expose
     private String time;
@@ -16,19 +16,19 @@ public class Data {
     /**
      * 
      * @return
-     *     The score
+     *     The action
      */
-    public String getScore() {
-        return score;
+    public String getAction() {
+        return action;
     }
 
     /**
      * 
-     * @param score
-     *     The score
+     * @param action
+     *     The action
      */
-    public void setScore(String score) {
-        this.score = score;
+    public void setAction(String action) {
+        this.action = action;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Data {
     @Override
     public String toString() {
         return "Data{" +
-                "score='" + score + '\'' +
+                "action='" + action + '\'' +
                 ", time='" + time + '\'' +
                 '}';
     }

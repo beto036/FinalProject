@@ -87,8 +87,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         public static void getData(final Context context, final User user){
             //Make http call to validate friendship or request
             final User userApp = ((App)context.getApplicationContext()).getUser();
-            Log.d(TAG, "getData: userApp*****************************************************" + userApp);
-            Log.d(TAG, "getData: userApp*****************************************************" + user);
             Observable<List<Friendship>> observable = RetrofitHelper.Factory.getFriends(userApp,user,false);
 
             observable

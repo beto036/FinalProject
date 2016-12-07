@@ -1,6 +1,5 @@
 package com.example.admin.finalproject.helpers;
 
-import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -146,13 +145,15 @@ public class UsersDialogAdapter extends RecyclerView.Adapter<UsersDialogAdapter.
                     });
         }
 
-        private void sendNotification(User user){
+        private void sendNotification(User user, Invitation invitation){
             SendNotificationRequest sendNotificationRequest = new SendNotificationRequest();
             sendNotificationRequest.setTo(user.getDeviceToken());
             Data data = new Data();
-            data.setScore("654654");
+            data.setAction("invitation");
             Notification notification = new Notification();
             notification.setTitle("New Event Invitation");
+            notification.setBody("You have an invitation for " + invitation.getEventTitle() + " event");
+            notification.setClickAction("INVITE_EVENT_ACTION");
             sendNotificationRequest.setData(data);
             sendNotificationRequest.setNotification(notification);
 
@@ -174,7 +175,7 @@ public class UsersDialogAdapter extends RecyclerView.Adapter<UsersDialogAdapter.
             });
         }
 
-        private void getUser(Invitation invitation){
+        private void getUser(final Invitation invitation){
             Observable<User> observable = RetrofitHelper.Factory.getUserById(invitation.getUserId());
             observable
                     .subscribeOn(Schedulers.io())
@@ -192,7 +193,7 @@ public class UsersDialogAdapter extends RecyclerView.Adapter<UsersDialogAdapter.
 
                         @Override
                         public void onNext(User user) {
-                            sendNotification(user);
+                            sendNotification(user, invitation);
                         }
                     });
         }

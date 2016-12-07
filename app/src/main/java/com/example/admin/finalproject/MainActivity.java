@@ -35,14 +35,11 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.aMainInputPassword)
     public EditText editTextPass;
 
-//    @BindView(R.id.aMainBtnForgot)
-//    public Button textViewForgot;
-
-
     private ProgressDialog alertDialog;
     private AlertDialog failLoginAlert;
     private boolean loginSuccess;
     private static final String TAG = "MainActivityTAG_";
+    private String action = null;
 
     public User user;
 
@@ -55,16 +52,22 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Bundle bundle = getIntent().getExtras();
+        Log.d(TAG, "onCreate: ///////////////////////////////////// getting extras ////////////////////////////////////////");
+
+        Bundle bundle = this.getIntent().getExtras();
         Log.d(TAG, "onCreate: " + bundle);
         if(bundle != null && !bundle.isEmpty()) {
-            Set<String> set = bundle.keySet();
-            Iterator<String> iterator = set.iterator();
-            while (iterator.hasNext()) {
-                String a = iterator.next();
-                Log.d(TAG, "onCreate: " + bundle.get(a));
-            }
+            action = bundle.getString("action");
+            Log.d(TAG, "onCreate: " + action);
+//                    Set<String> set = bundle.keySet();
+//            Iterator<String> iterator = set.iterator();
+//            while (iterator.hasNext()) {
+//                String a = iterator.next();
+//                Log.d(TAG, "onCreate: " + a + " " + bundle.get(a));
+//            }
         }
+
+        Log.d(TAG, "onCreate: ///////////////////////////////////// getting extras ////////////////////////////////////////");
 
     }
 
@@ -98,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "onCompleted: " + user);
                             validateAndUpdateUser();
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                            if(action != null){
+                                Log.d(TAG, "onCompleted: putting the extra" );
+                                intent.putExtra("action", action);
+                            }
                             startActivity(intent);
                             finish();
                         }else{

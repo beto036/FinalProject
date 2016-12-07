@@ -101,11 +101,9 @@ public class HomeActivity extends AppCompatActivity
         user = ((App)getApplication()).getUser();
 
         Log.d(TAG, "onCreate: " + user.toString());
-
-        EventsFragment eventsFragment = new EventsFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
-        showProgress("Scheduled Events", "Loading...");
-        getEvents(false);
+        String action = getIntent().getStringExtra("action");
+        Log.d(TAG, "onCreate: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< action >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
+        Log.d(TAG, "onCreate: " + action);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,6 +123,27 @@ public class HomeActivity extends AppCompatActivity
         mailTxt.setText(user.getEmail());
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if(action != null && action.equals("friendship")){
+            FriendRequestsFragment friendRequestsFragment = new FriendRequestsFragment();
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,friendRequestsFragment).commit();
+            getSupportActionBar().setTitle("Friend Requests");
+            showProgress("Requests","Loading...");
+            getFriends(true);
+        }else if(action != null && action.equals("invitation")){
+            String query = "{\"userId\":\"" + user.getId().get$oid() + "\","+
+                    "\"declined\":false, \"confirmed\":false}";
+            InvitationsFragment invitationsFragment = new InvitationsFragment();
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame,invitationsFragment).commit();
+            getSupportActionBar().setTitle("My Invitations");
+            showProgress("Invitations", "Loading");
+            getInvitations(query);
+        }else{
+            EventsFragment eventsFragment = new EventsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
+            showProgress("Scheduled Events", "Loading...");
+            getEvents(false);
+        }
     }
 
     private void fillUserRecycler(List<User> users){

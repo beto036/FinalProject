@@ -23,6 +23,12 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.Dark"
             android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="ADD_FRIEND_ACTION"/>
+                <action android:name="INVITE_EVENT_ACTION"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".SignUpActivity"
@@ -58,6 +64,7 @@
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorAccent" />
             <intent-filter>
+                <!--<action android:name="ADD_FRIEND_ACTION"/>-->
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
