@@ -146,6 +146,7 @@ public class HomeActivity extends AppCompatActivity
     private void fillUserRecycler(List<User> users){
         mUserArrayList.clear();
         mUserArrayList.addAll(users);
+        if (mUserArrayList.size()==0) findViewById(R.id.emptyRecycler).setVisibility(View.VISIBLE);
         userAdapter = new UserAdapter(mUserArrayList);
         mRecyclerView = (RecyclerView) findViewById(R.id.fUsersRecycler);
         mRecyclerView.setAdapter(userAdapter);
@@ -156,6 +157,7 @@ public class HomeActivity extends AppCompatActivity
     private void fillRecycler(List<Event> events) {
         mArrayList.clear();
         mArrayList.addAll(events);
+        if (mArrayList.size()==0) findViewById(R.id.emptyRecycler).setVisibility(View.VISIBLE);
         eventAdapter = new EventAdapter(mArrayList);
         mRecyclerView = (RecyclerView) findViewById(R.id.fEventsRecycler);
         mRecyclerView.setAdapter(eventAdapter);
@@ -166,6 +168,7 @@ public class HomeActivity extends AppCompatActivity
     private void fillFriendsRecycler(List<Friendship> friendships) {
         mFriendsArrayList.clear();
         mFriendsArrayList.addAll(friendships);
+        if (mFriendsArrayList.size()==0) findViewById(R.id.emptyRecycler).setVisibility(View.VISIBLE);
         friendsAdapter = new FriendsAdapter(mFriendsArrayList);
         mRecyclerView = (RecyclerView) findViewById(R.id.fFriendsRecycler);
         mRecyclerView.setAdapter(friendsAdapter);
@@ -176,6 +179,7 @@ public class HomeActivity extends AppCompatActivity
     private void fillRequestRecycler(List<Friendship> requests) {
         mFriendsArrayList.clear();
         mFriendsArrayList.addAll(requests);
+        if (mFriendsArrayList.size()==0) findViewById(R.id.emptyRecycler).setVisibility(View.VISIBLE);
         friendRequestsAdapter = new FriendRequestsAdapter(mFriendsArrayList);
         mRecyclerView = (RecyclerView) findViewById(R.id.fRequestsRecycler);
         mRecyclerView.setAdapter(friendRequestsAdapter);
@@ -186,6 +190,7 @@ public class HomeActivity extends AppCompatActivity
     private void fillInvitationsRecycler(List<Invitation> invitations) {
         mInvitationsArrayList.clear();
         mInvitationsArrayList.addAll(invitations);
+        if (mInvitationsArrayList.size()==0) findViewById(R.id.emptyRecycler).setVisibility(View.VISIBLE);
         invitationsAdapter = new InvitationsAdapter(mInvitationsArrayList);
         mRecyclerView = (RecyclerView) findViewById(R.id.fInvitationsRecycler);
         mRecyclerView.setAdapter(invitationsAdapter);

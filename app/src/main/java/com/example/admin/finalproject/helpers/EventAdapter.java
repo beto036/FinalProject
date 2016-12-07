@@ -44,8 +44,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
         Log.d(TAG, "onBindViewHolder: " + event);
         TextView eventTitle = holder.eventTitle;
         TextView eventDesc = holder.eventDesc;
+        TextView eventDate = holder.eventDate;
+        if(mArrayList.size() == 0){
+            eventDate.setVisibility(View.VISIBLE);
+        }
         eventTitle.setText(event.getEvent());
         eventDesc.setText(event.getDescription());
+        eventDate.setText(event.getDate());
         holder.event = event;
         holder.position = position;
     }
@@ -65,6 +70,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
         private static final String TAG = "EventAdapterTAG_";
         public final TextView eventTitle;
         public final TextView eventDesc;
+        public final TextView eventDate;
         public final CardView cardView;
         public Event event;
         public int position;
@@ -74,6 +80,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
             cardView = (CardView) itemView.findViewById(R.id.cv);
             eventTitle = (TextView) itemView.findViewById(R.id.eventTitle);
             eventDesc = (TextView) itemView.findViewById(R.id.eventDesc);
+            eventDate = (TextView) itemView.findViewById(R.id.eventDate);
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override

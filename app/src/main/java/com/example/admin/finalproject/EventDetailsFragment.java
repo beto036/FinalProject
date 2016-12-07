@@ -49,6 +49,9 @@ public class EventDetailsFragment extends Fragment {
     @BindView(R.id.fEventDetailTxtDesc)
     public TextView description;
 
+    @BindView(R.id.fEventDetailTxtDate)
+    public TextView date;
+
     @BindView(R.id.fEventDetailsInviteBtn)
     public Button invite;
 
@@ -86,6 +89,7 @@ public class EventDetailsFragment extends Fragment {
         }
         title.setText(event.getEvent());
         description.setText(event.getDescription());
+        date.setText(event.getDate());
 
         mMapView.onCreate(savedInstanceState);
 

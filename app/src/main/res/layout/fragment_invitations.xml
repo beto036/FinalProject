@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.admin.finalproject.InvitationsFragment">
 
+    <TextView
+        android:id="@+id/emptyRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="You don't have invitations"/>
+
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fInvitationsRecycler"

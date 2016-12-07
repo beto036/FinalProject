@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.admin.finalproject.FriendsFragment">
 
+        <TextView
+            android:id="@+id/emptyRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="You don't have friends"/>
+
         <!-- TODO: Update blank fragment layout -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fFriendsRecycler"
