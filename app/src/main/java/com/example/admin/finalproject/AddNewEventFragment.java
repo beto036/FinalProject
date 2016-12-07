@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -56,8 +57,14 @@ public class AddNewEventFragment extends Fragment {
     @BindView(R.id.fNewEventName)
     public EditText name;
 
+    @BindView(R.id.fNewEventNameLayout)
+    public TextInputLayout nameLayout;
+
     @BindView(R.id.fNewEventDesc)
     public EditText description;
+
+    @BindView(R.id.fNewEventDescLayout)
+    public TextInputLayout descriptionLayout;
 
     @BindView(R.id.fNewEventMap)
     public MapView mMapView;
@@ -65,8 +72,14 @@ public class AddNewEventFragment extends Fragment {
     @BindView(R.id.fNewEventDate)
     public EditText date;
 
+    @BindView(R.id.fNewEventDateLayout)
+    public TextInputLayout dateLayout;
+
     @BindView(R.id.fNewEventHour)
     public EditText time;
+
+    @BindView(R.id.fNewEventHourLayout)
+    public TextInputLayout timeLayout;
 
     @BindView(R.id.fab)
     public FloatingActionButton save;
@@ -144,54 +157,90 @@ public class AddNewEventFragment extends Fragment {
     }
 
     public void saveEvent(){
-        alertDialog = new ProgressDialog(getActivity());
-        alertDialog.setTitle("New Event");
-        alertDialog.setMessage("Saving...");
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-        event.setEvent(name.getText().toString());
-        event.setDescription(description.getText().toString());
-        event.setIsAdmin(true);
-        event.setUserId(user.getId().get$oid());
-        Log.d(TAG, "saveEvent: " + event);
+        clearErrors();
+        if(validate()) {
+            alertDialog = new ProgressDialog(getActivity());
+            alertDialog.setTitle("New Event");
+            alertDialog.setMessage("Saving...");
+            alertDialog.setCancelable(false);
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+            event.setEvent(name.getText().toString());
+            event.setDescription(description.getText().toString());
+            event.setIsAdmin(true);
+            event.setUserId(user.getId().get$oid());
+            Log.d(TAG, "saveEvent: " + event);
 
-        Observable<Event> observable = RetrofitHelper.Factory.insertEvent(event);
+            Observable<Event> observable = RetrofitHelper.Factory.insertEvent(event);
 
-        observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Event>() {
-                    @Override
-                    public void onCompleted() {
-                        alertDialog.dismiss();
+            observable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Event>() {
+                        @Override
+                        public void onCompleted() {
+                            alertDialog.dismiss();
 
-                        if(saveSuccess){
-                            EventsFragment eventsFragment = new EventsFragment();
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
+                            if (saveSuccess) {
+                                EventsFragment eventsFragment = new EventsFragment();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.aHomeFragFrame, eventsFragment).commit();
 
-                            ((HomeActivity)getActivity()).getEvents(true);
-                        }else{
-                            failSaveAlert = new AlertDialog.Builder(getContext())
-                                    .setMessage("Something is wrong. Please try later...")
-                                    .setTitle(R.string.fail_save_title)
-                                    .setPositiveButton("OK",null).create();
-                            failSaveAlert.show();
+                                ((HomeActivity) getActivity()).getEvents(true);
+                            } else {
+                                failSaveAlert = new AlertDialog.Builder(getContext())
+                                        .setMessage("Something is wrong. Please try later...")
+                                        .setTitle(R.string.fail_save_title)
+                                        .setPositiveButton("OK", null).create();
+                                failSaveAlert.show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError: " + e.toString());
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(TAG, "onError: " + e.toString());
+                        }
 
-                    @Override
-                    public void onNext(Event event) {
-                        if (event != null)
-                            saveSuccess = true;
-                    }
-                });
+                        @Override
+                        public void onNext(Event event) {
+                            if (event != null)
+                                saveSuccess = true;
+                        }
+                    });
+        }else{
+            AlertDialog failSaveAlert = new AlertDialog.Builder(getContext())
+                    .setMessage("Please check the errors in the form and try again")
+                    .setTitle(R.string.fail_save_title)
+                    .setPositiveButton("OK", null).create();
+            failSaveAlert.show();
+        }
+    }
 
+    private boolean validate() {
+        boolean res = true;
+        if(name.getText().toString().isEmpty()) {
+            nameLayout.setError("Title cannot be empty");
+            res = false;
+        }
+        if(description.getText().toString().isEmpty()) {
+            descriptionLayout.setError("Description cannot be empty");
+            res = false;
+        }
+        if(date.getText().toString().isEmpty()) {
+            dateLayout.setError("Date cannot be empty");
+            res = false;
+        }
+        if(time.getText().toString().isEmpty()) {
+            timeLayout.setError("Time cannot be empty");
+            res = false;
+        }
+        return res;
+    }
+
+    private void clearErrors() {
+        nameLayout.setError("");
+        descriptionLayout.setError("");
+        dateLayout.setError("");
+        timeLayout.setError("");
     }
 
     @Override
