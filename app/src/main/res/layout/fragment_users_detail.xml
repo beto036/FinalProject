@@ -2,8 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.example.admin.finalproject.UsersDetailFragment">
+    tools:context="com.example.admin.finalproject.UsersDetailFragment"
+    app:theme="@style/AppTheme.Dark2">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -28,7 +30,8 @@
         android:id="@+id/fUsersDetailReqButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="send Friend Request"/>
+        android:text="send Friend Request"
+        android:theme="@style/Button"/>
 
     <TextView
         android:id="@+id/fUserDetailTxtMsg"
@@ -47,7 +50,8 @@
         android:layout_height="wrap_content"
         android:text="Decline"
         android:layout_weight="1"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:theme="@style/Button"/>
 
 
     <Button
@@ -56,7 +60,8 @@
         android:layout_height="wrap_content"
         android:text="Accept"
         android:layout_weight="1"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:theme="@style/Button"/>
 </LinearLayout>
 
 </LinearLayout>

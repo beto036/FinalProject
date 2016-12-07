@@ -100,10 +100,7 @@ public class HomeActivity extends AppCompatActivity
         mInvitationsArrayList = new ArrayList<Invitation>();
         user = ((App)getApplication()).getUser();
 
-        Log.d(TAG, "onCreate: " + user.toString());
         String action = getIntent().getStringExtra("action");
-        Log.d(TAG, "onCreate: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< action >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
-        Log.d(TAG, "onCreate: " + action);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

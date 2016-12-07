@@ -1,6 +1,7 @@
 package com.example.admin.finalproject;
 
 
+import android.content.Context;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -78,6 +80,11 @@ public class UsersDetailFragment extends Fragment {
         isRequest = false;
         View view = inflater.inflate(R.layout.fragment_users_detail, container, false);
         unbinder = ButterKnife.bind(this,view);
+        View keyboard = this.getActivity().getCurrentFocus();
+        if (keyboard != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(keyboard.getWindowToken(), 0);
+        }
         user = this.getArguments().getParcelable("USER");
         friendship = this.getArguments().getParcelable("FRIENDSHIP");
         if(this.getArguments().containsKey("IS_REQUEST")) {
